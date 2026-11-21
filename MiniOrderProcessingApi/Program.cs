@@ -7,10 +7,19 @@ using MiniOrderProcessingApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // Singleton используем потому что в памяти приложения храним заказы
 builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapGet("/", () => "Mini Order Processing API");
 
